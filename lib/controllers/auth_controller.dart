@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
 
-import 'package:ihm/screens/login.dart';
 import 'package:ihm/screens/main_screen.dart';
 import 'package:ihm/screens/signup.dart';
 
@@ -45,8 +44,9 @@ class AuthController extends GetxController {
       // if the user is not found then the user is navigated to the Register Screen
       Get.offAll(() => const SignUp());
     } else {
+      Get.snackbar("title", "logging");
       // if the user exists and logged in the the user is navigated to the Home Screen
-      Get.offAll(() => MainScreen());
+      //Get.offAll(() => MainScreen());
     }
   }
 
@@ -81,13 +81,17 @@ class AuthController extends GetxController {
     try {
       await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-    } catch (firebaseAuthException) {}
+    } catch (firebaseAuthException) {
+      print("createUser error");
+    }
   }
 
   void login(String email, password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-    } catch (firebaseAuthException) {}
+    } catch (firebaseAuthException) {
+      print("signinwith email error");
+    }
   }
 
   void signOut() async {

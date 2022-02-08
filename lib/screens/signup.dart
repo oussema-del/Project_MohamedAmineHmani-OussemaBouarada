@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:get/get.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
+import 'package:ihm/screens/main_screen.dart';
 import 'package:ihm/styles/app_colors.dart';
 import 'package:ihm/screens/login.dart';
 import 'package:ihm/widgets/local_widgets/custom_button.dart';
@@ -127,22 +130,43 @@ class _SignUpState extends State<SignUp> {
                         height: 16,
                       ),
                       AuthButton(
-                        onTap: () {},
+                        onTap: () async {
+                          authController.register(_emailController.text.trim(),
+                              _passwordController.text.trim());
+                        },
                         text: 'Sign Up',
                       ),
-                      AuthButton(
-                          onTap: () {
+                      const SizedBox(
+                        height: 20.0,
+                        child: Text("or", textAlign: TextAlign.right),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        margin: const EdgeInsets.only(left: 20, right: 20),
+                        child: SignInButton(
+                          Buttons.GoogleDark,
+                          //elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 20.0),
+                          onPressed: () {
                             authController.signInWithGoogle();
                           },
-                          text: "google"),
+                        ),
+                      ),
+                      /* AuthButton(
+                          onTap: () async {
+                            authController.signInWithGoogle();
+                          },
+                          text: "Sign in with google"),*/
+
                       CustomRichText(
                         discription: 'Already Have an account? ',
                         text: 'Log In here',
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
+                          Get.offAll(const LoginScreen());
                         },
                       )
                     ],

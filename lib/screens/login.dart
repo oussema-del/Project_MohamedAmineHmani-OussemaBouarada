@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:get/get.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
 
 import 'package:ihm/screens/signup.dart';
@@ -48,8 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomHeader(
                 text: 'Log In.',
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const SignUp()));
+                  Get.offAll(const SignUp());
                 },
               ),
               Positioned(
@@ -132,6 +133,26 @@ class _LoginScreenState extends State<LoginScreen> {
                               _passwordController.text.trim());
                         },
                         text: 'Sign In',
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                        child: Text("or", textAlign: TextAlign.right),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        margin: const EdgeInsets.only(left: 20, right: 20),
+                        child: SignInButton(
+                          Buttons.GoogleDark,
+                          //elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 20.0),
+                          onPressed: () {
+                            authController.signInWithGoogle();
+                          },
+                        ),
                       ),
                       CustomRichText(
                         discription: "Don't already Have an account? ",
