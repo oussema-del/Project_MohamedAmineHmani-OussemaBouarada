@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ihm/styles/app_colors.dart';
+
 import 'package:ihm/styles/text_styles.dart';
 
 class AuthButton extends StatelessWidget {
-  final String text;
-  final Function() onTap;
-
   const AuthButton({
     Key? key,
     required this.onTap,
     required this.text,
   }) : super(key: key);
+
+  final Function() onTap;
+  final String text;
 
   @override
   Widget build(BuildContext context) {

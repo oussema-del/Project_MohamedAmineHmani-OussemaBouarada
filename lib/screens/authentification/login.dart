@@ -3,13 +3,13 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
 
-import 'package:ihm/screens/signup.dart';
+import 'package:ihm/screens/authentification/signup.dart';
 import 'package:ihm/styles/app_colors.dart';
 
-import 'package:ihm/widgets/local_widgets/custom_button.dart';
-import 'package:ihm/widgets/local_widgets/custom_formfield.dart';
-import 'package:ihm/widgets/local_widgets/custom_header.dart';
-import 'package:ihm/widgets/local_widgets/custom_richtext.dart';
+import 'package:ihm/widgets/global_widgets/custom_button2.dart';
+import 'package:ihm/widgets/global_widgets/custom_formfield.dart';
+import 'package:ihm/widgets/global_widgets/custom_header.dart';
+import 'package:ihm/widgets/global_widgets/custom_richtext.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                color: AppColors.yellowtaxi,
+                color: AppColors.blackshade,
               ),
               CustomHeader(
                 text: 'Log In.',

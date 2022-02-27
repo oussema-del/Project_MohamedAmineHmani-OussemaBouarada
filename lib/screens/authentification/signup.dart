@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
-import 'package:ihm/screens/main_screen.dart';
 import 'package:ihm/styles/app_colors.dart';
-import 'package:ihm/screens/login.dart';
-import 'package:ihm/widgets/local_widgets/custom_button.dart';
-import 'package:ihm/widgets/local_widgets/custom_formfield.dart';
-import 'package:ihm/widgets/local_widgets/custom_header.dart';
-import 'package:ihm/widgets/local_widgets/custom_richtext.dart';
-import 'package:ihm/widgets/local_widgets/google_sign%20in%20button.dart';
+import 'package:ihm/screens/authentification/login.dart';
+import 'package:ihm/widgets/global_widgets/custom_button2.dart';
+import 'package:ihm/widgets/global_widgets/custom_formfield.dart';
+import 'package:ihm/widgets/global_widgets/custom_header.dart';
+import 'package:ihm/widgets/global_widgets/custom_richtext.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -19,18 +17,24 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final _userName = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
   bool _passwordVisible = true;
-  String get userName => _userName.text.trim();
-  String get email => _emailController.text.trim();
-  String get password => _passwordController.text.trim();
+  final _userName = TextEditingController();
+
   @override
   void initState() {
     _passwordVisible = false;
     super.initState();
   }
+
+  String get userName => _userName.text.trim();
+
+  String get email => _emailController.text.trim();
+
+  String get password => _passwordController.text.trim();
+  String get name => _nameController.text.trim();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,7 @@ class _SignUpState extends State<SignUp> {
               Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                color: AppColors.yellowtaxi,
+                color: AppColors.blackshade,
               ),
               CustomHeader(
                   text: 'Sign Up.',
@@ -131,7 +135,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                       AuthButton(
                         onTap: () async {
-                          authController.register(_emailController.text.trim(),
+                          authController.register(
+                              _userName.text.trim(),
+                              _emailController.text.trim(),
                               _passwordController.text.trim());
                         },
                         text: 'Sign Up',

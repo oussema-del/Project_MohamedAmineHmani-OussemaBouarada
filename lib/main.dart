@@ -3,13 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:ihm/controllers/auth_controller.dart';
-import 'package:ihm/screens/signup.dart';
+import 'package:ihm/controllers/cart_controller.dart';
+import 'package:ihm/controllers/map_controller.dart';
+import 'package:ihm/controllers/paymentcontroller.dart';
+import 'package:ihm/controllers/product_controller.dart';
+import 'package:ihm/screens/authentification/login.dart';
+import 'package:ihm/screens/spalsh.dart';
 
 import 'constants/fire_base_constants.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await firebaseInitialization.then((value) => Get.put(AuthController()));
+  //await firebaseInitialization.then((value) => Get.put(AuthController()) =>Get.put( ProducsController()));
+  await firebaseInitialization.then((value) {
+    Get.put(AuthController());
+    Get.put(CartController());
+    Get.put(ProducsController());
+    Get.put(PaymentsController());
+    Get.put(MapController());
+  });
   runApp(const MyApp());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
@@ -33,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SignUp(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

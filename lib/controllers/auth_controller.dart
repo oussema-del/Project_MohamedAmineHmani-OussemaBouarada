@@ -1,16 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ihm/constants/app_constants.dart';
 import 'package:ihm/constants/fire_base_constants.dart';
+import 'package:ihm/models/user.dart';
+import 'package:ihm/screens/home/home_shop.dart';
 
-import 'package:ihm/screens/main_screen.dart';
-import 'package:ihm/screens/signup.dart';
+import 'package:ihm/screens/authentification/signup.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
-  late Rx<User?> firebaseUser;
 
+  late Rx<User?> firebaseUser;
+  Rx<UserModel> userModel = UserModel().obs;
   late Rx<GoogleSignInAccount?> googleSignInAccount;
+
+  String usersCollection = "users";
+
+  updateUserData(Map<String, dynamic> data) {
+    logger.i("UPDATED");
+    firebaseFirestore
+        .collection("users")
+        .doc(firebaseUser.value!.uid)
+        .update(data);
+  }
 
   @override
   void onReady() {
@@ -33,8 +47,9 @@ class AuthController extends GetxController {
       // if the user is not found then the user is navigated to the Register Screen
       Get.offAll(() => const SignUp());
     } else {
+      userModel.bindStream(listenToUser());
       // if the user exists and logged in the the user is navigated to the Home Screen
-      Get.offAll(() => MainScreen());
+      Get.offAll(() => const HomeScreen());
     }
   }
 
@@ -65,6 +80,15 @@ class AuthController extends GetxController {
 
         await auth
             .signInWithCredential(credential)
+            .then((value) => FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(auth.currentUser!.uid)
+                    .set({
+                  "id": auth.currentUser!.uid,
+                  "name": auth.currentUser!.email,
+                  "email": auth.currentUser!.email,
+                  "cart": [],
+                }))
             .catchError((onErr) => print(onErr));
       }
     } catch (e) {
@@ -77,12 +101,21 @@ class AuthController extends GetxController {
     }
   }
 
-  void register(String email, password) async {
+  void register(String name, email, password) async {
     try {
-      await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      await auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(auth.currentUser!.uid)
+                  .set({
+                "id": auth.currentUser!.uid,
+                "name": name,
+                "email": auth.currentUser!.email,
+                "cart": [],
+              }));
     } catch (firebaseAuthException) {
-      print("createUser error");
+      print(firebaseAuthException.toString());
     }
   }
 
@@ -97,4 +130,10 @@ class AuthController extends GetxController {
   void signOut() async {
     await auth.signOut();
   }
+
+  Stream<UserModel> listenToUser() => firebaseFirestore
+      .collection(usersCollection)
+      .doc(firebaseUser.value!.uid)
+      .snapshots()
+      .map((snapshot) => UserModel.fromDocumentSnapshot(snapshot: snapshot));
 }
